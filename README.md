@@ -8,7 +8,7 @@ timing & reporting framework, can be used from Maven with both AspectJ-based app
   * load-time weaving (LTW)
 
 The developer guide only shows how to manually set up a project, but not how to automate builds with Maven. Beside the
-fact that the old project Codehaus homepage no longer exists and can only be reached via WayBack Machine, the CTW
+fact that the old Codehaus project homepage no longer exists and can only be reached via WayBack Machine, the CTW
 documentation is based on logging-framework-specific libraries unavailable on Maven Central which have to be manually
 downloaded and integrated into the build. Those extra libs are basically the full lib minus timing aspects for all but
 one logging framework.
@@ -79,20 +79,21 @@ In order to activate the LTW Maven profile it is sufficient to define a property
     (...)
 
     $ cat perfStats.log
+
     Performance Statistics   2017-04-14 11:29:30 - 2017-04-14 11:29:40
     Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
     doSomething                                            250,0         250         250         0,0           1
 
 ## Configuration differences between CTW and LTW
 
-Both builds have many things in common as can be seen when inspecting _pom.xml_. Noteworthy differences are*
+Both builds have many things in common as can be seen when inspecting _pom.xml_. Noteworthy differences are:
   * For CTW we need [AspectJ Maven Plugin](http://www.mojohaus.org/aspectj-maven-plugin/index.html), for LTW
     Maven Compiler is enough.
   * On the other hand, for running the CTW code it is enough to just put the AspectJ runtime _aspectjrt.jar_ on the
     classpath, which is very simple: `java -cp /path/to/aspectjrt;... ...`
   * For running the LTW code, we need the AspectJ weaver _aspectjweaver.jar_ on the command line as a Java agent:
     `java -javaagent:/path/to/aspectjweaver.jar ...`. This also needs to be taken into account when trying to create a
-    run configurations in your IDE of choice, e.g. IntelliJ IDEA. Eclipse with AJDT (AspectJ Development Tools)
+    run configuration in your IDE of choice, e.g. IntelliJ IDEA. Eclipse with AJDT (AspectJ Development Tools)
     installed even knows a special LTW run config type, there it is a bit easier.
   * Both types of run configurations can be inspected in _pom.xml_. Just compare the different Maven Exec plugin
     configurations for both profiles.

@@ -43,14 +43,6 @@
             <encoding>${project.build.sourceEncoding}</encoding>
             <!--<verbose>true</verbose> -->
             <!--<warn>constructorName,packageDefaultMethod,deprecation,maskedCatchBlocks,unusedLocals,unusedArguments,unusedImport</warn> -->
-            <!--
-                        <aspectLibraries>
-                          <aspectLibrary>
-                            <groupId>org.perf4j</groupId>
-                            <artifactId>perf4j</artifactId>
-                          </aspectLibrary>
-                        </aspectLibraries>
-            -->
             <weaveDependencies>
               <weaveDependency>
                 <groupId>org.perf4j</groupId>

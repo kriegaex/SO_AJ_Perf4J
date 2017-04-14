@@ -1,0 +1,273 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.scrum-master.stackoverflow</groupId>
+  <artifactId>perf4j-example</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.source-target.version>1.8</java.source-target.version>
+    <aspectj.version>1.8.10</aspectj.version>
+    <main-class>de.scrum_master.so.Application</main-class>
+  </properties>
+
+  <build>
+
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.5.1</version>
+          <configuration>
+            <source>${java.source-target.version}</source>
+            <target>${java.source-target.version}</target>
+            <!-- IMPORTANT -->
+            <useIncrementalCompilation>false</useIncrementalCompilation>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>aspectj-maven-plugin</artifactId>
+          <version>1.10</version>
+          <configuration>
+            <showWeaveInfo>true</showWeaveInfo>
+            <source>${java.source-target.version}</source>
+            <target>${java.source-target.version}</target>
+            <Xlint>ignore</Xlint>
+            <complianceLevel>${java.source-target.version}</complianceLevel>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <!--<verbose>true</verbose> -->
+            <!--<warn>constructorName,packageDefaultMethod,deprecation,maskedCatchBlocks,unusedLocals,unusedArguments,unusedImport</warn> -->
+            <!--
+                        <aspectLibraries>
+                          <aspectLibrary>
+                            <groupId>org.perf4j</groupId>
+                            <artifactId>perf4j</artifactId>
+                          </aspectLibrary>
+                        </aspectLibraries>
+            -->
+            <weaveDependencies>
+              <weaveDependency>
+                <groupId>org.perf4j</groupId>
+                <artifactId>perf4j</artifactId>
+              </weaveDependency>
+            </weaveDependencies>
+            <xmlConfigured>${project.build.resources[0].directory}/META-INF/aop.xml</xmlConfigured>
+          </configuration>
+          <executions>
+            <execution>
+              <!-- IMPORTANT -->
+              <phase>process-sources</phase>
+              <goals>
+                <goal>compile</goal>
+                <goal>test-compile</goal>
+              </goals>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>org.aspectj</groupId>
+              <artifactId>aspectjtools</artifactId>
+              <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.aspectj</groupId>
+              <artifactId>aspectjweaver</artifactId>
+              <version>${aspectj.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.0.0</version>
+          <executions>
+            <execution>
+              <goals>
+                <!-- Generate properties ${my-group:my-artifact:jar} pointing to dependency paths -->
+                <goal>properties</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.4.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>com.jolira</groupId>
+          <artifactId>onejar-maven-plugin</artifactId>
+          <version>1.4.4</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>one-jar</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <onejarVersion>0.96</onejarVersion>
+            <mainClass>${main-class}</mainClass>
+            <attachToBuild>true</attachToBuild>
+          </configuration>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.jolira</groupId>
+        <artifactId>onejar-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjrt</artifactId>
+        <version>${aspectj.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+        <version>${aspectj.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.perf4j</groupId>
+        <artifactId>perf4j</artifactId>
+        <version>0.9.16</version>
+      </dependency>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.17</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-jexl</groupId>
+        <artifactId>commons-jexl</artifactId>
+        <version>1.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.perf4j</groupId>
+      <artifactId>perf4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-jexl</groupId>
+      <artifactId>commons-jexl</artifactId>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+
+    <profile>
+      <id>load-time-weaving</id>
+      <activation>
+        <property>
+          <name>LTW</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <configuration>
+              <executable>java</executable>
+              <arguments>
+                <argument>-javaagent:${org.aspectj:aspectjweaver:jar}</argument>
+                <argument>-classpath</argument>
+                <classpath/>
+                <argument>${main-class}</argument>
+              </arguments>
+            </configuration>
+            <executions>
+              <execution>
+                <id>run-application-ltw</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <dependencies>
+        <dependency>
+          <groupId>org.aspectj</groupId>
+          <artifactId>aspectjweaver</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>compile-time-weaving</id>
+      <activation>
+        <property>
+          <name>!LTW</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <configuration>
+              <mainClass>${main-class}</mainClass>
+            </configuration>
+            <executions>
+              <execution>
+                <id>run-application-ctw</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <dependencies>
+        <dependency>
+          <groupId>org.aspectj</groupId>
+          <artifactId>aspectjrt</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+
+  </profiles>
+
+</project>
